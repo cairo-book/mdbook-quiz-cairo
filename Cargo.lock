@@ -1144,7 +1144,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "mdbook-quiz"
+name = "mdbook-quiz-cairo"
 version = "0.3.10"
 dependencies = [
  "anyhow",
@@ -1154,13 +1154,31 @@ dependencies = [
  "mdbook",
  "mdbook-aquascope",
  "mdbook-preprocessor-utils",
+ "mdbook-quiz-cairo-validate",
  "mdbook-quiz-schema",
- "mdbook-quiz-validate",
  "regex",
  "serde_json",
  "toml",
  "toml_edit",
  "uuid",
+]
+
+[[package]]
+name = "mdbook-quiz-cairo-validate"
+version = "0.3.4"
+dependencies = [
+ "anyhow",
+ "fluid-let",
+ "markdown",
+ "mdbook-quiz-schema",
+ "miette",
+ "regex",
+ "tempfile",
+ "textwrap 0.16.0",
+ "thiserror",
+ "toml",
+ "toml-spanned-value",
+ "zspell",
 ]
 
 [[package]]
@@ -1175,7 +1193,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "mdbook-quiz-validate"
+name = "mdbook-quiz-cairo-validate"
 version = "0.3.10"
 dependencies = [
  "anyhow",
