@@ -1,5 +1,5 @@
 [package]
-name = "mdbook-quiz-validate"
+name = "mdbook-quiz-cairo-validate"
 version = "0.3.4"
 authors = ["Will Crichton <crichton.will@gmail.com>"]
 description = "Input validation for quizzes used in mdbook-quiz"
@@ -19,3 +19,4 @@ toml-spanned-value = "0.1.0"
 tempfile = "3.8.0"
 textwrap = "0.16.0"
 fluid-let = "1.0.0"
+regex = "1.10.4"
