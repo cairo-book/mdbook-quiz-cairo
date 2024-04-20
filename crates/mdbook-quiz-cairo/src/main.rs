@@ -3,7 +3,7 @@ use mdbook_preprocessor_utils::{
   mdbook::preprocess::PreprocessorContext, Asset, SimplePreprocessor,
 };
 
-use mdbook_quiz_validate::IdSet;
+use mdbook_quiz_cairo_validate::IdSet;
 use regex::Regex;
 use std::{
   env,
@@ -126,7 +126,7 @@ impl QuizPreprocessor {
     let mut content_toml = fs::read_to_string(&quiz_path_abs)
       .with_context(|| format!("Failed to read quiz file: {}", quiz_path_abs.display()))?;
 
-    mdbook_quiz_validate::validate(
+    mdbook_quiz_cairo_validate::validate(
       &quiz_path_abs,
       &content_toml,
       &self.question_ids,
@@ -179,11 +179,11 @@ impl QuizPreprocessor {
 
 impl SimplePreprocessor for QuizPreprocessor {
   fn name() -> &'static str {
-    "quiz"
+    "quiz-cairo"
   }
 
   fn build(ctx: &PreprocessorContext) -> Result<Self> {
-    log::info!("Running the mdbook-quiz preprocessor");
+    log::info!("Running the mdbook-quiz-cairo preprocessor");
 
     let config_toml = ctx.config.get_preprocessor(Self::name()).unwrap();
     let parse_bool = |key: &str| config_toml.get(key).map(|value| value.as_bool().unwrap());
@@ -203,7 +203,7 @@ impl SimplePreprocessor for QuizPreprocessor {
     };
 
     if let Some(more_words) = &config.more_words {
-      mdbook_quiz_validate::register_more_words(more_words)?;
+      mdbook_quiz_cairo_validate::register_more_words(more_words)?;
     }
 
     Ok(QuizPreprocessor {

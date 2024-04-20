@@ -1,53 +1,36 @@
-# mdbook-quiz: interactive quizzes for Markdown
+# mdbook-quiz-cairo: interactive quizzes for Markdown with Cairo support
 
-[![tests](https://github.com/cognitive-engineering-lab/mdbook-quiz/actions/workflows/main.yml/badge.svg)](https://github.com/cognitive-engineering-lab/mdbook-quiz/actions/workflows/main.yml)
-[![crates.io](https://img.shields.io/crates/v/mdbook-quiz.svg)](https://crates.io/crates/mdbook-quiz)
+A fork of [https://github.com/cognitive-engineering-lab/mdbook-quiz](mdbook-quiz-cairo) with support for validating answers of [Cairo](https://cairo-lang.org/) quizzes.
 
-_[live demo](https://cognitive-engineering-lab.github.io/mdbook-quiz/)_
-
-This repository provides an [mdBook](https://github.com/rust-lang/mdBook) [preprocessor](https://rust-lang.github.io/mdBook/format/configuration/preprocessors.html) that allows you to add interactive quizzes to your Markdown books. A quiz looks like this:
+This repository provides an [mdBook](https://github.com/rust-lang/mdBook) [preprocessor](https://rust-lang.github.io/mdBook/format/configuration/preprocessors.html) that allows you to add interactive quizzes written with snippets of Cairo code to your Markdown books. A quiz looks like this:
 
 <img width="521" alt="Screenshot of mdbook-quiz embedded in a web page" src="https://user-images.githubusercontent.com/663326/178065062-73542533-a1d7-479e-975b-cb0bf03658b2.png">
 
 Table of contents:
- * [Installation](#installation)
-   + [From crates.io](#from-cratesio)
-   + [From source](#from-source)
- * [Usage](#usage)
- * [Quiz schema](#quiz-schema)
-   + [Short answer](#short-answer)
-   + [Multiple choice](#multiple-choice)
-   + [Tracing](#tracing)
- * [Quiz configuration](#quiz-configuration)
 
+- [Installation](#installation)
+  - [From crates.io](#from-cratesio)
+  - [From source](#from-source)
+- [Usage](#usage)
+- [Quiz schema](#quiz-schema)
+  - [Short answer](#short-answer)
+  - [Multiple choice](#multiple-choice)
+  - [Tracing](#tracing)
+- [Quiz configuration](#quiz-configuration)
 
 ## Installation
 
-*These instructions assume you have an mdBook already set up. Unfamiliar with mdBook? Read the [mdBook guide!](https://rust-lang.github.io/mdBook/)*
-
-### From crates.io
-
-```
-cargo install mdbook-quiz --locked
-```
-
-Note: this tool is under active development. I recommend pinning to a specific version to avoid breakage, e.g. by running
-
-```
-cargo install mdbook-quiz --locked --version <YOUR_VERSION>
-```
-
-And you can check your version by running `mdbook-quiz -V`. This repository uses semantic versioning for the quiz data format, so your quizzes should not break if you update to a more recent patch.
+_These instructions assume you have an mdBook already set up. Unfamiliar with mdBook? Read the [mdBook guide!](https://rust-lang.github.io/mdBook/)_
 
 ### From source
 
 You need Cargo, [cargo-make](https://github.com/sagiegurari/cargo-make), and [Depot](https://github.com/cognitive-engineering-lab/depot) installed. Then run:
 
 ```
-git clone https://github.com/cognitive-engineering-lab/mdbook-quiz
-cd mdbook-quiz
+git clone https://github.com/cairo-book/mdbook-quiz-cairo
+cd mdbook-quiz-cairo
 cargo make init-bindings
-cargo install --path crates/mdbook-quiz
+cargo install --path crates/mdbook-quiz-cairo
 ```
 
 ## Usage
@@ -55,14 +38,14 @@ cargo install --path crates/mdbook-quiz
 First, create a quiz file. Quizzes are encoded as TOML files (see [Quiz schema](#quiz-schema)). For example:
 
 ```toml
-# quizzes/rust-variables.toml
+# quizzes/cairo-variables.toml
 [[questions]]
 type = "ShortAnswer"
-prompt.prompt = "What is the keyword for declaring a variable in Rust?"
+prompt.prompt = "What is the keyword for declaring a variable in Cairo?"
 answer.answer = "let"
 context = "For example, you can write: `let x = 1`"
 ```
- 
+
 Then in your Markdown file, add a reference to the quiz file:
 
 ```markdown
@@ -70,10 +53,11 @@ Then in your Markdown file, add a reference to the quiz file:
 
 And now, a _quiz_:
 
-{{#quiz ../quizzes/rust-variables.toml}}
+{{#quiz ../quizzes/cairo-variables.toml}}
 ```
 
 Configure your `book.toml` to activate `mdbook-quiz`.
+
 ```toml
 # book.toml
 [preprocessor.quiz]
@@ -115,9 +99,10 @@ It has a discriminating string name `type` and then a `prompt` and `answer`, alo
 > Note that the `Markdown` type is just a string, but will be interpreted as Markdown by the quiz renderer.
 
 Currently, mdbook-quiz supports these question types:
-* [Short answer](#short-answer)
-* [Multiple choice](#multiple-choice)
-* [Tracing](#tracing)
+
+- [Short answer](#short-answer)
+- [Multiple choice](#multiple-choice)
+- [Tracing](#tracing)
 
 <hr />
 
@@ -130,7 +115,7 @@ A question where the answer is a one-line string.
 ```toml
 [[questions]]
 type = "ShortAnswer"
-prompt.prompt = "What is the keyword for declaring a variable in Rust?"
+prompt.prompt = "What is the keyword for declaring a variable in Cairo?"
 answer.answer = "let"
 context = "For example, you can write: `let x = 1`"
 ```
@@ -151,7 +136,11 @@ export interface ShortAnswerAnswer {
   alternatives?: string[];
 }
 
-export type ShortAnswer = QuestionFields<"ShortAnswer", ShortAnswerPrompt, ShortAnswerAnswer>;
+export type ShortAnswer = QuestionFields<
+  "ShortAnswer",
+  ShortAnswerPrompt,
+  ShortAnswerAnswer
+>;
 ```
 
 <hr />
@@ -235,7 +224,7 @@ export interface TracingAnswer {
   doesCompile: boolean;
 
   /** If doesCompile=true, then the contents of stdout after running the program */
-  stdout?: string;  
+  stdout?: string;
 }
 
 export type Tracing = QuestionFields<"Tracing", TracingPrompt, TracingAnswer>;
@@ -245,7 +234,7 @@ export type Tracing = QuestionFields<"Tracing", TracingPrompt, TracingAnswer>;
 
 You can configure mdbook-quiz by adding options to the `[preprocessor.quiz]` section of `book.toml`. The options are:
 
-* `fullscreen` (boolean): If true, then a quiz will take up the web page's full screen during use.
-* `cache-answers` (boolean): If true, then the user's answers will be saved in their browser's `localStorage`. Then the quiz will show the user's answers even after they reload the page.
-* `spellcheck` (boolean): If true, then run a spellchecker on all Markdown strings.
-* `more-words` (path): An optional path to a `.dic` file that adds valid words to the spellchecker. You can find a base dictionary for each language in [wooorm/dictionaries](https://github.com/wooorm/dictionaries/tree/main/dictionaries). You can find documentation about how to write a `.dic` file in [this blog post](https://typethinker.blogspot.com/2008/02/fun-with-aspell-word-lists.html).
+- `fullscreen` (boolean): If true, then a quiz will take up the web page's full screen during use.
+- `cache-answers` (boolean): If true, then the user's answers will be saved in their browser's `localStorage`. Then the quiz will show the user's answers even after they reload the page.
+- `spellcheck` (boolean): If true, then run a spellchecker on all Markdown strings.
+- `more-words` (path): An optional path to a `.dic` file that adds valid words to the spellchecker. You can find a base dictionary for each language in [wooorm/dictionaries](https://github.com/wooorm/dictionaries/tree/main/dictionaries). You can find documentation about how to write a `.dic` file in [this blog post](https://typethinker.blogspot.com/2008/02/fun-with-aspell-word-lists.html).
