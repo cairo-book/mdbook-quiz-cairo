@@ -1,5 +1,5 @@
 [package]
-name = "mdbook-quiz"
+name = "mdbook-quiz-cairo"
 authors = ["Will Crichton <crichton.will@gmail.com>"]
 description = "Interactive quizzes for your mdBook"
 license = "MIT OR Apache-2.0"
@@ -24,9 +24,9 @@ mdbook = "= 0.4.25"
 mdbook-preprocessor-utils = "0.2.0"
 mdbook-aquascope = {version = "0.3.4", optional = true}
 mdbook-quiz-schema = {path = "../mdbook-quiz-schema", version = "0.3.4"}
-mdbook-quiz-validate = {path = "../mdbook-quiz-validate", version = "0.3.4"}
+mdbook-quiz-validate = {path = "../mdbook-quiz-cairo-validate", version = "0.3.4"}
 toml_edit = "0.20.0"
-uuid = {version = "1.4.1", features = ["v4"]}
+uuid = { version = "1.4.1", features = ["v4"] }
 log = "0.4.20"
 clap = { version = "4", features = ["derive"] }
 
