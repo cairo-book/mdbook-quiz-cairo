@@ -1,6 +1,6 @@
 # mdbook-quiz-cairo: interactive quizzes for Markdown with Cairo support
 
-A fork of [https://github.com/cognitive-engineering-lab/mdbook-quiz](mdbook-quiz-cairo) with support for validating answers of [Cairo](https://cairo-lang.org/) quizzes.
+A fork of [mdbook-quiz](https://github.com/cognitive-engineering-lab/mdbook-quiz) with support for validating answers of [Cairo](https://cairo-lang.org/) quizzes.
 
 This repository provides an [mdBook](https://github.com/rust-lang/mdBook) [preprocessor](https://rust-lang.github.io/mdBook/format/configuration/preprocessors.html) that allows you to add interactive quizzes written with snippets of Cairo code to your Markdown books. A quiz looks like this:
 
@@ -8,15 +8,21 @@ This repository provides an [mdBook](https://github.com/rust-lang/mdBook) [prepr
 
 Table of contents:
 
-- [Installation](#installation)
-  - [From crates.io](#from-cratesio)
-  - [From source](#from-source)
-- [Usage](#usage)
-- [Quiz schema](#quiz-schema)
-  - [Short answer](#short-answer)
-  - [Multiple choice](#multiple-choice)
-  - [Tracing](#tracing)
-- [Quiz configuration](#quiz-configuration)
+- [mdbook-quiz-cairo: interactive quizzes for Markdown with Cairo support](#mdbook-quiz-cairo-interactive-quizzes-for-markdown-with-cairo-support)
+  - [Installation](#installation)
+    - [From source](#from-source)
+  - [Usage](#usage)
+  - [Quiz schema](#quiz-schema)
+    - [Short answer](#short-answer)
+      - [Example](#example)
+      - [Interface](#interface)
+    - [Multiple choice](#multiple-choice)
+      - [Example](#example-1)
+      - [Interface](#interface-1)
+    - [Tracing](#tracing)
+      - [Example](#example-2)
+      - [Interface](#interface-2)
+  - [Quiz configuration](#quiz-configuration)
 
 ## Installation
 
