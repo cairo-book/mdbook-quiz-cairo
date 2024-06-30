@@ -35,5 +35,5 @@ cp crates/mdbook-quiz-schema/bindings/* js/packages/quiz/src/bindings
 [tasks.install]
 dependencies = ["init-bindings"]
 script = """
-cargo install --path crates/mdbook-quiz --features rust-editor --features aquascope --locked
+cargo install --path crates/mdbook-quiz-cairo --features rust-editor --features aquascope --locked
 """

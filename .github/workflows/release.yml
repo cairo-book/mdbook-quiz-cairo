@@ -21,7 +21,7 @@ jobs:
             target: x86_64-apple-darwin
             kind: bare
           ## TODO: Windows needs specific configuration to find
-          ## NPM globally installed binaries, and I couldn't figure 
+          ## NPM globally installed binaries, and I couldn't figure
           ## it out in ~30 minutes. Deal with this later.
           # - os: windows-latest
           #   target: x86_64-pc-windows-msvc
@@ -51,17 +51,17 @@ jobs:
 
   build-schema:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - uses: actions/checkout@v2
       - name: Setup
-        uses: ./.github/workflows/setup  
+        uses: ./.github/workflows/setup
       - name: Build schema
         run: cargo run --bin gen-json-schema --features json-schema > mdbook-quiz.schema.json
       - uses: actions/upload-artifact@v2
         with:
           name: schema
           path: mdbook-quiz.schema.json
-  
+
   publish-artifacts:
     needs: [build-artifacts, build-schema]
     runs-on: ubuntu-latest
@@ -74,13 +74,13 @@ jobs:
             x86_64-unknown-linux-gnu_bare/mdbook-quiz_x86_64-unknown-linux-gnu_bare.tar.gz
             x86_64-apple-darwin_bare/mdbook-quiz_x86_64-apple-darwin_bare.tar.gz
             aarch64-unknown-linux-gnu_bare/mdbook-quiz_aarch64-unknown-linux-gnu_bare.tar.gz
-            aarch64-apple-darwin_bare/mdbook-quiz_aarch64-apple-darwin_bare.tar.gz      
+            aarch64-apple-darwin_bare/mdbook-quiz_aarch64-apple-darwin_bare.tar.gz
             schema/mdbook-quiz.schema.json
-    
+
   publish-crate:
     needs: publish-artifacts
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - uses: actions/checkout@v2
       - name: Setup
         uses: ./.github/workflows/setup
@@ -88,16 +88,16 @@ jobs:
         uses: baptiste0928/cargo-install@v2
         with:
           crate: cargo-workspaces
-      # This ensures that the `crates/mdbook-quiz/js/` directory is 
-      # populated before running publish      
+      # This ensures that the `crates/mdbook-quiz-cairo/js/` directory is
+      # populated before running publish
       - name: Cargo build
-        run: cargo build      
+        run: cargo build
       - name: Install mdbook-quiz
-        run: cargo install --path crates/mdbook-quiz --debug --locked
+        run: cargo install --path crates/mdbook-quiz-cairo --debug --locked
       - name: Build example mdbook
         run: mdbook build
         working-directory: example/mdbook
-      - name: Cargo release        
+      - name: Cargo release
         run: cargo workspaces publish --from-git --yes --allow-dirty --token ${{ secrets.CARGO_TOKEN }}
       - uses: JS-DevTools/npm-publish@v1
         with:
@@ -108,5 +108,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./example/mdbook/book
-      
-    
