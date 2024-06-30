@@ -1165,7 +1165,7 @@ dependencies = [
 
 [[package]]
 name = "mdbook-quiz-cairo-validate"
-version = "0.3.4"
+version = "0.3.10"
 dependencies = [
  "anyhow",
  "fluid-let",
@@ -1174,7 +1174,7 @@ dependencies = [
  "miette",
  "regex",
  "tempfile",
- "textwrap 0.16.0",
+ "textwrap 0.16.1",
  "thiserror",
  "toml",
  "toml-spanned-value",
@@ -1190,23 +1190,6 @@ dependencies = [
  "serde_json",
  "toml",
  "ts-rs 7.1.1",
-]
-
-[[package]]
-name = "mdbook-quiz-cairo-validate"
-version = "0.3.10"
-dependencies = [
- "anyhow",
- "fluid-let",
- "markdown",
- "mdbook-quiz-schema",
- "miette",
- "tempfile",
- "textwrap 0.16.1",
- "thiserror",
- "toml",
- "toml-spanned-value",
- "zspell",
 ]
 
 [[package]]

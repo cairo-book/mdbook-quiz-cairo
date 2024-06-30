@@ -4,7 +4,7 @@ A fork of [mdbook-quiz](https://github.com/cognitive-engineering-lab/mdbook-quiz
 
 This repository provides an [mdBook](https://github.com/rust-lang/mdBook) [preprocessor](https://rust-lang.github.io/mdBook/format/configuration/preprocessors.html) that allows you to add interactive quizzes written with snippets of Cairo code to your Markdown books. A quiz looks like this:
 
-<img width="521" alt="Screenshot of mdbook-quiz embedded in a web page" src="https://user-images.githubusercontent.com/663326/178065062-73542533-a1d7-479e-975b-cb0bf03658b2.png">
+<img width="521" alt="Screenshot of mdbook-quiz-cairo embedded in a web page" src="https://user-images.githubusercontent.com/663326/178065062-73542533-a1d7-479e-975b-cb0bf03658b2.png">
 
 Table of contents:
 
@@ -104,7 +104,7 @@ It has a discriminating string name `type` and then a `prompt` and `answer`, alo
 
 > Note that the `Markdown` type is just a string, but will be interpreted as Markdown by the quiz renderer.
 
-Currently, mdbook-quiz supports these question types:
+Currently, mdbook-quiz-cairo supports these question types:
 
 - [Short answer](#short-answer)
 - [Multiple choice](#multiple-choice)
@@ -238,7 +238,7 @@ export type Tracing = QuestionFields<"Tracing", TracingPrompt, TracingAnswer>;
 
 ## Quiz configuration
 
-You can configure mdbook-quiz by adding options to the `[preprocessor.quiz]` section of `book.toml`. The options are:
+You can configure mdbook-quiz-cairo by adding options to the `[preprocessor.quiz]` section of `book.toml`. The options are:
 
 - `fullscreen` (boolean): If true, then a quiz will take up the web page's full screen during use.
 - `cache-answers` (boolean): If true, then the user's answers will be saved in their browser's `localStorage`. Then the quiz will show the user's answers even after they reload the page.
