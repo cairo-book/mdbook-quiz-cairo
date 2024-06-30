@@ -14,7 +14,7 @@ name = ["precommit-js", "precommit-cargo"]
 
 
 [tasks.watch]
-script = "cargo watch -x 'install --path crates/mdbook-quiz --debug --offline --features rust-editor --features source-map' -w crates -w js/packages/quiz-embed/dist --ignore-nothing"
+script = "cargo watch -x 'install --path crates/mdbook-quiz-cairo --debug --offline --features rust-editor --features source-map' -w crates -w js/packages/quiz-embed/dist --ignore-nothing"
 
 
 [tasks.clean]
@@ -35,5 +35,5 @@ cp crates/mdbook-quiz-schema/bindings/* js/packages/quiz/src/bindings
 [tasks.install]
 dependencies = ["init-bindings"]
 script = """
-cargo install --path crates/mdbook-quiz --features rust-editor --features aquascope --locked
+cargo install --path crates/mdbook-quiz-cairo --features rust-editor --features aquascope --locked
 """
