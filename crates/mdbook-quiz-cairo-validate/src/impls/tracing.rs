@@ -27,21 +27,27 @@ fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> 
 }
 
 pub fn prepare_crate_for_exercise(file_path: &PathBuf) -> PathBuf {
+  println!("Preparing crate for file: {:?}", file_path);
   // Prepare the crate for the exercise
   let crate_path = current_dir().unwrap().join(PathBuf::from("runner_crate"));
+  println!("Base crate path: {:?}", crate_path);
+
   let src_dir = crate_path.join("src");
+  println!("Checking src directory: {:?}", src_dir);
   if !src_dir.exists() {
+    println!("Creating src directory as it doesn't exist");
     let _ = fs::create_dir(&src_dir);
   }
 
-  // Create a crate for this exercise only by copying the runner_crate directory and
-  // filling the src/lib.cairo file with the content of the file_path
+  // Create a crate for this exercise
   let dest_crate_path = file_path.parent().unwrap().join("runner_crate");
+  println!("Destination crate path: {:?}", dest_crate_path);
   copy_dir_all(&crate_path, &dest_crate_path).unwrap();
 
   let lib_path = dest_crate_path.join("src").join("lib.cairo");
+  println!("Copying from {:?} to {:?}", file_path, lib_path);
   match fs::copy(file_path, &lib_path) {
-      Ok(_) => {}
+      Ok(_) => println!("File copied successfully"),
       Err(err) => panic!("Error occurred while preparing the quiz,\nQuiz: {file_path:?}\nLib path: {lib_path:?}\n{err:?}"),
   };
 
