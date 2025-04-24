@@ -19,12 +19,12 @@ lint:
   enabled:
     - actionlint@1.6.27
     - checkov@3.2.71
-    - clippy@1.65.0
+    - clippy@1.85.0
     - git-diff-check
     - markdownlint@0.39.0
     - osv-scanner@1.7.2
     - prettier@3.2.5
-    - rustfmt@1.65.0
+    - rustfmt@1.85.0
     - taplo@0.8.1
     - trivy@0.50.1
     - trufflehog@3.71.0

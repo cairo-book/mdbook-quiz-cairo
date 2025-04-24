@@ -29,6 +29,9 @@ fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> 
 pub fn prepare_crate_for_exercise(file_path: &PathBuf) -> PathBuf {
   // Prepare the crate for the exercise
   let crate_path = current_dir().unwrap().join(PathBuf::from("runner_crate"));
+  if !crate_path.exists() {
+    panic!("Source runner_crate directory does not exist at: {:?}. This directory is required for exercise validation.", crate_path);
+  }
   let src_dir = crate_path.join("src");
   if !src_dir.exists() {
     let _ = fs::create_dir(&src_dir);
@@ -41,7 +44,7 @@ pub fn prepare_crate_for_exercise(file_path: &PathBuf) -> PathBuf {
 
   let lib_path = dest_crate_path.join("src").join("lib.cairo");
   match fs::copy(file_path, &lib_path) {
-      Ok(_) => {}
+      Ok(_) => {},
       Err(err) => panic!("Error occurred while preparing the quiz,\nQuiz: {file_path:?}\nLib path: {lib_path:?}\n{err:?}"),
   };
 
@@ -56,17 +59,36 @@ impl Validate for Tracing {
       ..
     } = &self.0;
     let mut inner = || -> anyhow::Result<()> {
-      let dir = TempDir::new()?;
+      let dir = TempDir::new()
+        .map_err(|e| anyhow::anyhow!("Failed to create temporary directory: {}", e))?;
       let src_path = dir.path().join("main.cairo");
-      fs::write(&src_path, program)?;
+      fs::write(&src_path, program).map_err(|e| {
+        anyhow::anyhow!(
+          "Failed to write program to temporary file {}: {}",
+          src_path.display(),
+          e
+        )
+      })?;
       let crate_path = prepare_crate_for_exercise(&src_path);
+
+      // Check if crate_path exists
+      if !crate_path.exists() {
+        anyhow::bail!("Crate path does not exist: {}", crate_path.display());
+      }
 
       let compile_output = Command::new("scarb")
         .arg("build")
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .current_dir(&crate_path)
-        .output()?;
+        .output()
+        .map_err(|e| {
+          anyhow::anyhow!(
+            "Failed to execute scarb build in directory {}: {}",
+            crate_path.display(),
+            e
+          )
+        })?;
 
       let scarb_stderr = String::from_utf8(compile_output.stderr)?;
       let answer_val = tomlcast!(value.table["answer"]);
