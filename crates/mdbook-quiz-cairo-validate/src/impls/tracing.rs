@@ -199,7 +199,7 @@ fn main() {
 answer.doesCompile = true
 answer.stdout = "1"
 "#;
-  assert!(crate::harness(contents).is_ok());
+  assert!(crate::test::harness(contents).is_ok());
 }
 
 #[test]
