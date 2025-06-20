@@ -91,6 +91,7 @@ impl Validate for Tracing {
         })?;
 
       let scarb_stderr = String::from_utf8(compile_output.stderr)?;
+      let scarb_stdout = String::from_utf8(compile_output.stdout)?;
       let answer_val = tomlcast!(value.table["answer"]);
 
       if compile_output.status.success() {
@@ -150,8 +151,15 @@ impl Validate for Tracing {
           cx,
           !answer.does_compile,
           labels = vec![tomlcast!(answer_val.table["doesCompile"]).labeled_span()],
-          "program does not compile but doesCompile = true. scarb stderr:\n{}",
-          textwrap::indent(&scarb_stderr, "  ")
+          "program does not compile but doesCompile = true. output:\n{}",
+          textwrap::indent(
+            format!(
+              "scarb stderr:\n{}\nscarb stdout:\n{}",
+              scarb_stderr, scarb_stdout
+            )
+            .as_str(),
+            "  "
+          )
         );
 
         cxensure!(
