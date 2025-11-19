@@ -110,7 +110,7 @@ impl Validate for Tracing {
         );
 
         let cmd_output = Command::new("scarb")
-          .arg("cairo-run")
+          .arg("execute")
           .arg("--no-build")
           .stdout(Stdio::piped())
           .stderr(Stdio::piped())
@@ -138,9 +138,18 @@ impl Validate for Tracing {
         );
 
         let expected_stdout = answer.stdout.as_ref().unwrap();
+        let filtered_stdout = cmd_stdout
+          .lines()
+          .filter(|line| {
+            !line.trim().is_empty()
+              && !line.contains("Executing")
+              && !line.contains("Saving output")
+          })
+          .collect::<Vec<_>>()
+          .join("\n");
         cxensure!(
           cx,
-          cmd_stdout.trim() == expected_stdout.trim(),
+          filtered_stdout.trim() == expected_stdout.trim(),
           labels = vec![tomlcast!(answer_val.table["stdout"]).labeled_span()],
           "expected stdout:\n{}\ndid not match actual stdout:\n{}",
           textwrap::indent(expected_stdout, "  "),
