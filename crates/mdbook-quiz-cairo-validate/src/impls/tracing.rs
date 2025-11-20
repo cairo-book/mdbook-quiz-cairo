@@ -137,7 +137,12 @@ impl Validate for Tracing {
           textwrap::indent(&cmd_stderr, "  ")
         );
 
-        let expected_stdout = answer.stdout.as_ref().unwrap();
+        let expected_stdout = answer.stdout.as_ref().unwrap_or_else(|| {
+          panic!(
+            "Expected answer for program {program} to have stdout.\nanswer_stdout:\n{:?}\ncommand_stdout:\n{}",
+            answer.stdout, cmd_stdout
+          )
+        });
         let filtered_stdout = cmd_stdout
           .lines()
           .filter(|line| {
